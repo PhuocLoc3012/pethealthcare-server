@@ -36,15 +36,25 @@ public class SummaryDataService implements ISummaryDataService {
         generateSummaryData();
     }
 
-    @Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Ho_Chi_Minh")  // Chạy hàng ngày vào lúc nửa đêm
-    public void generateSummaryData() {
-        // Lấy dữ liệu từ ngày hôm trước
-        Date yesterday = Date.from(java.time.LocalDate.now().minusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date startDate = Date.from(yesterday.toInstant());
-        Date endDate = Date.from(java.time.LocalDate.now().minusDays(1).atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant());
+//    @Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Ho_Chi_Minh")  // Chạy hàng ngày vào lúc nửa đêm
+//    public void generateSummaryData() {
+//        // Lấy dữ liệu từ ngày hôm trước
+//        Date yesterday = Date.from(java.time.LocalDate.now().minusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+//        Date startDate = Date.from(yesterday.toInstant());
+//        Date endDate = Date.from(java.time.LocalDate.now().minusDays(1).atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant());
+//
+//        generateSummaryDataForDate(startDate, endDate);
+//    }
+@Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Ho_Chi_Minh")  // Chạy hàng ngày vào lúc nửa đêm
+public void generateSummaryData() {
+    // Lấy dữ liệu từ ngày hôm trước
+    ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+    Date yesterday = Date.from(LocalDate.now(zoneId).minusDays(1).atStartOfDay(zoneId).toInstant());
+    Date startDate = Date.from(yesterday.toInstant());
+    Date endDate = Date.from(LocalDate.now(zoneId).minusDays(1).atTime(23, 59, 59).atZone(zoneId).toInstant());
 
-        generateSummaryDataForDate(startDate, endDate);
-    }
+    generateSummaryDataForDate(startDate, endDate);
+}
 
     @Override
     public void generateMissingSummaryData(Date fromDate, Date toDate) {
